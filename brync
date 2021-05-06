@@ -1,6 +1,14 @@
 #!/usr/local/bin/zsh
 bb=0
 while sleep 0.1; do
-printf -v b %.0f `brightness -l 2>/dev/null | grep brightness | awk '{print $4 " * 200" }' | bc`
-[[ $bb -ne $b ]] && bb=$b && ddcctl -d 1 -b $b && ddcctl -d 2 -b $b >/dev/null 2>&1
+    printf -v b %.0f `brightness -l 2>/dev/null | grep brightness | awk '{print $4 " * 200" }' | bc`
+    if [[ $bb -ne $b ]]; then
+        bb=$b
+        num_displays=`ddcctl 2>/dev/null | grep found | gsed -E 's/^.*found ([0-9]+) external.*$/\1/'`
+        if [[ $num_displays -gt 0 ]]; then
+            for (( i=1; i<=$num_displays; i++ )); do
+                ddcctl -d $i -b $b >/dev/null 2>&1 &
+            done
+        fi
+    fi
 done
