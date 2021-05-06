@@ -2,5 +2,5 @@
 bb=0
 while sleep 0.1; do
 printf -v b %.0f `brightness -l 2>/dev/null | grep brightness | awk '{print $4 " * 200" }' | bc`
-[[ $bb -ne $b ]] && bb=$b && ddcctl -d 1 -b $b >/dev/null 2>&1
+[[ $bb -ne $b ]] && bb=$b && ddcctl -d 1 -b $b && ddcctl -d 2 -b $b >/dev/null 2>&1
 done
