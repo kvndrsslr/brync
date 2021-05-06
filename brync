@@ -1,4 +1,4 @@
-#/usr/local/bin/zsh
+#!/usr/local/bin/zsh
 bb=0
 while sleep 0.1; do
 printf -v b %.0f `brightness -l 2>/dev/null | grep brightness | awk '{print $4 " * 200" }' | bc`
